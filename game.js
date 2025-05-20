@@ -453,12 +453,48 @@ function initEventListeners() {
     
     shareButton.addEventListener('click', shareGame);
     
+    // 모바일 터치 이벤트
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', handleTouchEnd);
+    
     // 윈도우 리사이즈
     window.addEventListener('resize', () => {
         if (gameState.isRunning) {
             resizeCanvas();
         }
     });
+}
+
+// 터치 이벤트 핸들러
+function handleTouchStart(e) {
+    if (!gameState.isMobileVersion || !gameState.isRunning) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const touchX = touch.clientX - rect.left;
+    game.paddle.x = touchX - (game.paddle.width / 2);
+}
+
+function handleTouchMove(e) {
+    if (!gameState.isMobileVersion || !gameState.isRunning) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const touchX = touch.clientX - rect.left;
+    game.paddle.x = touchX - (game.paddle.width / 2);
+    
+    // 패들이 화면 밖으로 나가지 않도록 제한
+    if (game.paddle.x < 0) {
+        game.paddle.x = 0;
+    } else if (game.paddle.x + game.paddle.width > canvas.width) {
+        game.paddle.x = canvas.width - game.paddle.width;
+    }
+}
+
+function handleTouchEnd(e) {
+    if (!gameState.isMobileVersion || !gameState.isRunning) return;
+    e.preventDefault();
 }
 
 // 버전 선택

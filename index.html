@@ -99,43 +99,78 @@
             color: #ff0000;
             font-size: 24px;
         }
-        #versionSelect, #levelSelect {
-            position: absolute;
+        #versionSelect {
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
             color: white;
             display: none;
             z-index: 1000;
+            min-width: 300px;
         }
-        .versionButton {
+        
+        #versionSelect h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        
+        #pcButton, #mobileButton {
             display: block;
-            width: 200px;
-            margin: 10px auto;
-            padding: 10px;
-            font-size: 18px;
+            width: 280px;
+            margin: 15px auto;
+            padding: 20px;
+            font-size: 24px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            background-color: #4CAF50;
+            transition: all 0.3s ease;
             color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+        
         #pcButton {
             background-color: #4CAF50;
         }
+        
         #pcButton:hover {
             background-color: #45a049;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
+        
         #mobileButton {
             background-color: #2196F3;
         }
+        
         #mobileButton:hover {
             background-color: #1976D2;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            #versionSelect {
+                width: 90%;
+                max-width: 400px;
+                padding: 20px;
+            }
+            
+            #versionSelect h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            #pcButton, #mobileButton {
+                width: 100%;
+                padding: 15px;
+                font-size: 20px;
+                margin: 10px auto;
+            }
         }
         .levelButton {
             display: block;

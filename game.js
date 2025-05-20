@@ -327,7 +327,7 @@ function resetGameElements() {
     console.log('게임 요소 위치 재조정');
     game.paddle.width = canvas.width * 0.2;
     game.paddle.height = 20;
-    game.paddle.y = canvas.height - 50;
+    game.paddle.y = canvas.height - 40; // 패들 위치를 약간 위로 조정
     game.paddle.x = (canvas.width - game.paddle.width) / 2;
     game.paddle.dx = 0;
     
@@ -529,26 +529,38 @@ function selectVersion(isMobile) {
 function resizeCanvas() {
     const container = canvas.parentElement;
     const containerWidth = container.clientWidth - 20;
-    const maxHeight = window.innerHeight * 0.8;
+    const maxHeight = window.innerHeight * 0.7; // 화면 높이의 70%로 제한
     
     if (gameState.isMobileVersion) {
         canvas.width = containerWidth;
         let calculatedHeight = containerWidth * (16/9);
+        
+        // 높이가 최대 높이를 초과하면 조정
         if (calculatedHeight > maxHeight) {
             calculatedHeight = maxHeight;
             canvas.width = calculatedHeight * (9/16);
         }
+        
         canvas.height = calculatedHeight;
+        
+        // 컨테이너 중앙 정렬
+        const containerHeight = calculatedHeight + 60; // 헤더 높이(50px) + 여백(10px) 고려
+        container.style.height = `${containerHeight}px`;
+        container.style.maxHeight = `${maxHeight + 60}px`;
     } else {
         canvas.width = containerWidth;
         let calculatedHeight = containerWidth * (9/16);
+        
+        // 높이가 최대 높이를 초과하면 조정
         if (calculatedHeight > maxHeight) {
             calculatedHeight = maxHeight;
             canvas.width = calculatedHeight * (16/9);
         }
+        
         canvas.height = calculatedHeight;
     }
     
+    // 게임 요소 위치 재조정
     resetGameElements();
 }
 

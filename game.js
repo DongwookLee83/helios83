@@ -473,7 +473,16 @@ function handleTouchStart(e) {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const touchX = touch.clientX - rect.left;
-    game.paddle.x = touchX - (game.paddle.width / 2);
+    const scaleX = canvas.width / rect.width;
+    const scaledTouchX = touchX * scaleX;
+    game.paddle.x = scaledTouchX - (game.paddle.width / 2);
+    
+    // 패들이 화면 밖으로 나가지 않도록 제한
+    if (game.paddle.x < 0) {
+        game.paddle.x = 0;
+    } else if (game.paddle.x + game.paddle.width > canvas.width) {
+        game.paddle.x = canvas.width - game.paddle.width;
+    }
 }
 
 function handleTouchMove(e) {
@@ -482,7 +491,9 @@ function handleTouchMove(e) {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const touchX = touch.clientX - rect.left;
-    game.paddle.x = touchX - (game.paddle.width / 2);
+    const scaleX = canvas.width / rect.width;
+    const scaledTouchX = touchX * scaleX;
+    game.paddle.x = scaledTouchX - (game.paddle.width / 2);
     
     // 패들이 화면 밖으로 나가지 않도록 제한
     if (game.paddle.x < 0) {
@@ -502,10 +513,14 @@ function selectVersion(isMobile) {
     console.log('버전 선택:', isMobile ? '모바일' : 'PC');
     gameState.isMobileVersion = isMobile;
     versionSelect.style.display = 'none';
-    resizeCanvas();
     
-    // 난이도 선택 화면 대신 바로 게임 시작
-    gameState.level = 'Easy'; // 기본 난이도 설정
+    // 모바일 버전일 경우 터치 이벤트 활성화
+    if (isMobile) {
+        canvas.style.touchAction = 'none'; // 기본 터치 동작 방지
+    }
+    
+    resizeCanvas();
+    gameState.level = 'Easy';
     levelElement.textContent = gameState.level;
     initGame();
 }

@@ -104,7 +104,7 @@ function updateLivesDisplay() {
 // 벽돌 크기 계산 함수
 function calculateBrickLayout() {
     const availableWidth = canvas.width - (brickOffsetLeft * 2);
-    const availableHeight = canvas.height * 0.6; // 화면 높이의 60%를 벽돌 영역으로 사용
+    const availableHeight = canvas.height * 0.5; // 화면 높이의 50%를 벽돌 영역으로 사용
     
     // 벽돌 개수에 따라 크기 계산
     brickWidth = Math.floor((availableWidth - (brickColumnCount - 1) * brickPadding) / brickColumnCount);
@@ -120,7 +120,7 @@ function calculateBrickLayout() {
     // 오프셋 재계산
     const totalBricksWidth = (brickWidth * brickColumnCount) + (brickPadding * (brickColumnCount - 1));
     brickOffsetLeft = Math.floor((canvas.width - totalBricksWidth) / 2);
-    brickOffsetTop = Math.floor(canvas.height * 0.1);
+    brickOffsetTop = Math.floor(canvas.height * 0.15); // 상단 여백 증가
 }
 
 // 벽돌 초기화 함수
@@ -202,11 +202,11 @@ function selectVersion(isMobile) {
         // 모바일 버전에서는 캔버스 크기 조정
         const containerWidth = Math.min(500, window.innerWidth - 20);
         canvas.width = containerWidth;
-        canvas.height = containerWidth * 1.33; // 3:4 비율
+        canvas.height = containerWidth * 1.5; // 세로 길이 증가
         
         // 패들 위치 재조정
         paddle.width = canvas.width * 0.2; // 화면 너비의 20%
-        paddle.y = canvas.height - 30;
+        paddle.y = canvas.height - 50; // 하단 여백 증가
         resetBall();
         
         // 벽돌 재배치
@@ -366,7 +366,7 @@ function checkGameOver() {
 // 공 위치 초기화
 function resetBall() {
     ball.x = canvas.width / 2;
-    ball.y = canvas.height - 50;
+    ball.y = paddle.y - 30; // 공과 패들 사이 간격 증가
     ball.dx = ball.speed;
     ball.dy = -ball.speed;
 }

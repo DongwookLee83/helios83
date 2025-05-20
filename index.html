@@ -22,37 +22,72 @@
             align-items: center;
             width: 100%;
             height: 100vh;
-            max-width: 500px;
+            max-width: 1200px;
             padding: 10px;
             box-sizing: border-box;
+            gap: 10px;
+            overflow: hidden;
+        }
+        #gameHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            color: white;
+            flex-shrink: 0;
+            height: 50px;
+        }
+        #levelDisplay {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        #scoreDisplay {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        #shareButton {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #shareButton:hover {
+            background-color: #7b1fa2;
         }
         canvas {
             border: 2px solid #fff;
             background-color: #000;
-            max-width: 100%;
-            height: auto;
-        }
-        #gameInfo {
-            color: white;
-            text-align: center;
-            margin-bottom: 10px;
             width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            max-height: calc(100vh - 100px);
         }
         #startButton {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 15px 30px;
+            font-size: 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
         #startButton:hover {
             background-color: #45a049;
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
         #lives {
             display: flex;
@@ -64,35 +99,7 @@
             color: #ff0000;
             font-size: 24px;
         }
-        #gameControls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        .controlButton {
-            padding: 8px 16px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #pauseButton {
-            background-color: #ffa500;
-            color: white;
-        }
-        #pauseButton:hover {
-            background-color: #ff8c00;
-        }
-        #closeButton {
-            background-color: #ff4444;
-            color: white;
-        }
-        #closeButton:hover {
-            background-color: #cc0000;
-        }
-        #versionSelect {
+        #versionSelect, #levelSelect {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -103,6 +110,7 @@
             text-align: center;
             color: white;
             display: none;
+            z-index: 1000;
         }
         .versionButton {
             display: block;
@@ -114,32 +122,20 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            background-color: #4CAF50;
+            color: white;
         }
         #pcButton {
             background-color: #4CAF50;
-            color: white;
         }
         #pcButton:hover {
             background-color: #45a049;
         }
         #mobileButton {
             background-color: #2196F3;
-            color: white;
         }
         #mobileButton:hover {
             background-color: #1976D2;
-        }
-        #levelSelect {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            color: white;
-            display: none;
         }
         .levelButton {
             display: block;
@@ -151,24 +147,22 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            color: white;
         }
         #easyButton {
             background-color: #4CAF50;
-            color: white;
         }
         #easyButton:hover {
             background-color: #45a049;
         }
         #normalButton {
             background-color: #ffa500;
-            color: white;
         }
         #normalButton:hover {
             background-color: #ff8c00;
         }
         #hardButton {
             background-color: #ff4444;
-            color: white;
         }
         #hardButton:hover {
             background-color: #cc0000;
@@ -208,13 +202,6 @@
             50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
             100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
         }
-        #shareButton {
-            background-color: #9c27b0;
-            color: white;
-        }
-        #shareButton:hover {
-            background-color: #7b1fa2;
-        }
         @media (max-width: 768px) {
             body {
                 height: 100vh;
@@ -222,52 +209,47 @@
             }
             #gameContainer {
                 height: 100vh;
-                padding: 10px;
-                justify-content: space-between;
+                padding: 5px;
+                gap: 5px;
+            }
+            #gameHeader {
+                padding: 5px;
+                height: 40px;
+            }
+            #levelDisplay, #scoreDisplay {
+                font-size: 1em;
+            }
+            #shareButton {
+                padding: 6px 12px;
+                font-size: 14px;
             }
             canvas {
-                width: 100%;
-                height: auto;
-                max-height: calc(100vh - 150px);
-            }
-            .controlButton {
-                padding: 12px 24px;
-                font-size: 18px;
-            }
-            #gameInfo {
-                margin-bottom: 10px;
+                max-height: calc(100vh - 80px);
             }
         }
     </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <div id="gameInfo">
-            <p>점수: <span id="score">0</span></p>
-            <p>레벨: <span id="level">Easy</span></p>
-            <div id="lives"></div>
-            <div id="gameControls">
-                <button id="pauseButton" class="controlButton">일시정지</button>
-                <button id="closeButton" class="controlButton">게임 종료</button>
-                <button id="shareButton" class="controlButton">게임 공유</button>
-            </div>
-        </div>
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <button id="startButton">게임 시작</button>
-        <div id="versionSelect">
-            <h2>버전 선택</h2>
-            <button id="pcButton" class="versionButton">PC 버전</button>
-            <button id="mobileButton" class="versionButton">모바일 버전</button>
-        </div>
-        <div id="levelSelect">
-            <h2>난이도 선택</h2>
-            <button id="easyButton" class="levelButton">Easy</button>
-            <button id="normalButton" class="levelButton">Normal</button>
-            <button id="hardButton" class="levelButton">Hard</button>
-        </div>
-        <div id="levelUpMessage">Level Up!</div>
-        <div id="failMessage">Fail!</div>
+    <button id="startButton">게임 시작</button>
+    
+    <div id="versionSelect" class="screen">
+        <h2>버전 선택</h2>
+        <button id="pcButton">PC 버전</button>
+        <button id="mobileButton">모바일 버전</button>
     </div>
+
+    <div id="gameContainer">
+        <div id="gameHeader">
+            <div id="level">Level: Easy</div>
+            <div id="score">Score: 0</div>
+            <div id="lives"></div>
+            <button id="shareButton">공유하기</button>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <div id="levelUpMessage" class="message">Level Up!</div>
+    <div id="failMessage" class="message">실패!</div>
     <script src="game.js"></script>
 </body>
 </html> 

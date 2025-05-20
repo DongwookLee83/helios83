@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkanoid Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            font-family: Arial, sans-serif;
+        }
+        #gameContainer {
+            position: relative;
+        }
+        canvas {
+            border: 2px solid #fff;
+            background-color: #000;
+            max-width: 100%;
+            height: auto;
+        }
+        #gameInfo {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+        }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #startButton:hover {
+            background-color: #45a049;
+        }
+        #lives {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .heart {
+            color: #ff0000;
+            font-size: 24px;
+        }
+        #gameControls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .controlButton {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #pauseButton {
+            background-color: #ffa500;
+            color: white;
+        }
+        #pauseButton:hover {
+            background-color: #ff8c00;
+        }
+        #closeButton {
+            background-color: #ff4444;
+            color: white;
+        }
+        #closeButton:hover {
+            background-color: #cc0000;
+        }
+        #versionSelect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            display: none;
+        }
+        .versionButton {
+            display: block;
+            width: 200px;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #pcButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #pcButton:hover {
+            background-color: #45a049;
+        }
+        #mobileButton {
+            background-color: #2196F3;
+            color: white;
+        }
+        #mobileButton:hover {
+            background-color: #1976D2;
+        }
+        #levelSelect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            display: none;
+        }
+        .levelButton {
+            display: block;
+            width: 200px;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #easyButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #easyButton:hover {
+            background-color: #45a049;
+        }
+        #normalButton {
+            background-color: #ffa500;
+            color: white;
+        }
+        #normalButton:hover {
+            background-color: #ff8c00;
+        }
+        #hardButton {
+            background-color: #ff4444;
+            color: white;
+        }
+        #hardButton:hover {
+            background-color: #cc0000;
+        }
+        #levelUpMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffd700;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            animation: fadeInOut 1s ease-in-out;
+        }
+        #failMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ff4444;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            animation: fadeInOut 1s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+        #shareButton {
+            background-color: #9c27b0;
+            color: white;
+        }
+        #shareButton:hover {
+            background-color: #7b1fa2;
+        }
+        @media (max-width: 768px) {
+            canvas {
+                width: 100%;
+                height: auto;
+            }
+            .controlButton {
+                padding: 12px 24px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <button id="startButton">게임 시작</button>
+        <div id="versionSelect">
+            <h2>버전 선택</h2>
+            <button id="pcButton" class="versionButton">PC 버전</button>
+            <button id="mobileButton" class="versionButton">모바일 버전</button>
+        </div>
+        <div id="levelSelect">
+            <h2>난이도 선택</h2>
+            <button id="easyButton" class="levelButton">Easy</button>
+            <button id="normalButton" class="levelButton">Normal</button>
+            <button id="hardButton" class="levelButton">Hard</button>
+        </div>
+        <div id="levelUpMessage">Level Up!</div>
+        <div id="failMessage">Fail!</div>
+        <div id="gameInfo">
+            <p>점수: <span id="score">0</span></p>
+            <p>레벨: <span id="level">Easy</span></p>
+            <div id="lives"></div>
+            <div id="gameControls">
+                <button id="pauseButton" class="controlButton">일시정지</button>
+                <button id="closeButton" class="controlButton">게임 종료</button>
+                <button id="shareButton" class="controlButton">게임 공유</button>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html> 

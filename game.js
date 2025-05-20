@@ -104,7 +104,7 @@ function updateLivesDisplay() {
 // 벽돌 크기 계산 함수
 function calculateBrickLayout() {
     const availableWidth = canvas.width - (brickOffsetLeft * 2);
-    const availableHeight = canvas.height * 0.5; // 화면 높이의 50%를 벽돌 영역으로 사용
+    const availableHeight = canvas.height * 0.3; // 화면 높이의 30%를 벽돌 영역으로 사용
     
     // 벽돌 개수에 따라 크기 계산
     brickWidth = Math.floor((availableWidth - (brickColumnCount - 1) * brickPadding) / brickColumnCount);
@@ -120,7 +120,7 @@ function calculateBrickLayout() {
     // 오프셋 재계산
     const totalBricksWidth = (brickWidth * brickColumnCount) + (brickPadding * (brickColumnCount - 1));
     brickOffsetLeft = Math.floor((canvas.width - totalBricksWidth) / 2);
-    brickOffsetTop = Math.floor(canvas.height * 0.15); // 상단 여백 증가
+    brickOffsetTop = Math.floor(canvas.height * 0.1); // 상단에서 10% 위치에 배치
 }
 
 // 벽돌 초기화 함수
@@ -202,11 +202,11 @@ function selectVersion(isMobile) {
         // 모바일 버전에서는 캔버스 크기 조정
         const containerWidth = Math.min(500, window.innerWidth - 20);
         canvas.width = containerWidth;
-        canvas.height = containerWidth * 1.5; // 세로 길이 증가
+        canvas.height = containerWidth * 2; // 세로 길이를 더 길게 설정
         
         // 패들 위치 재조정
         paddle.width = canvas.width * 0.2; // 화면 너비의 20%
-        paddle.y = canvas.height - 50; // 하단 여백 증가
+        paddle.y = canvas.height - 50; // 하단 여백
         resetBall();
         
         // 벽돌 재배치
@@ -462,58 +462,17 @@ mobileButton.addEventListener('click', () => selectVersion(true));
 // 공유 버튼 이벤트
 shareButton.addEventListener('click', shareGame);
 
-// 터치 이벤트 리스너
-mobileTouchArea.addEventListener('touchstart', handleTouchStart, { passive: false });
-mobileTouchArea.addEventListener('touchmove', handleTouchMove, { passive: false });
-mobileTouchArea.addEventListener('touchend', handleTouchEnd, { passive: false });
-mobileTouchArea.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+// 터치 이벤트 리스너 제거
+// mobileTouchArea.addEventListener('touchstart', handleTouchStart, { passive: false });
+// mobileTouchArea.addEventListener('touchmove', handleTouchMove, { passive: false });
+// mobileTouchArea.addEventListener('touchend', handleTouchEnd, { passive: false });
+// mobileTouchArea.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
-// 터치 이벤트 처리
-function handleTouchStart(e) {
-    if (!isMobileVersion || !gameStarted || gamePaused) return;
-    
-    e.preventDefault();
-    isTouching = true;
-    updateTouchPosition(e);
-}
-
-function handleTouchMove(e) {
-    if (!isMobileVersion || !gameStarted || gamePaused || !isTouching) return;
-    
-    e.preventDefault();
-    updateTouchPosition(e);
-}
-
-function handleTouchEnd(e) {
-    if (!isMobileVersion || !gameStarted || gamePaused) return;
-    
-    e.preventDefault();
-    isTouching = false;
-    touchIndicator.style.display = 'none';
-}
-
-function updateTouchPosition(e) {
-    const touch = e.touches[0];
-    const rect = mobileTouchArea.getBoundingClientRect();
-    const touchX = touch.clientX - rect.left;
-    const touchY = touch.clientY - rect.top;
-    
-    // 터치 인디케이터 표시
-    touchIndicator.style.display = 'block';
-    touchIndicator.style.left = touchX + 'px';
-    touchIndicator.style.top = touchY + 'px';
-    
-    // 패들 위치 업데이트
-    const paddleX = (touchX / rect.width) * canvas.width;
-    paddle.x = paddleX - paddle.width / 2;
-    
-    // 패들이 캔버스 경계를 벗어나지 않도록 제한
-    if (paddle.x < 0) {
-        paddle.x = 0;
-    } else if (paddle.x + paddle.width > canvas.width) {
-        paddle.x = canvas.width - paddle.width;
-    }
-}
+// 터치 이벤트 처리 함수들 제거
+// function handleTouchStart(e) { ... }
+// function handleTouchMove(e) { ... }
+// function handleTouchEnd(e) { ... }
+// function updateTouchPosition(e) { ... }
 
 // 게임 공유
 function shareGame() {

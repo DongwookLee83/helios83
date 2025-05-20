@@ -16,6 +16,9 @@
         }
         #gameContainer {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         canvas {
             border: 2px solid #fff;
@@ -27,6 +30,7 @@
             color: white;
             text-align: center;
             margin-top: 10px;
+            width: 100%;
         }
         #startButton {
             position: absolute;
@@ -205,21 +209,66 @@
         #shareButton:hover {
             background-color: #7b1fa2;
         }
+        #mobileTouchArea {
+            display: none;
+            width: 100%;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #touchIndicator {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(33, 150, 243, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            pointer-events: none;
+        }
         @media (max-width: 768px) {
+            #gameContainer {
+                width: 100%;
+                max-width: 500px;
+                padding: 10px;
+            }
             canvas {
                 width: 100%;
                 height: auto;
+                aspect-ratio: 3/4;
             }
             .controlButton {
                 padding: 12px 24px;
                 font-size: 18px;
+            }
+            #mobileTouchArea {
+                display: block;
+            }
+            #gameInfo {
+                order: -1;
             }
         }
     </style>
 </head>
 <body>
     <div id="gameContainer">
+        <div id="gameInfo">
+            <p>점수: <span id="score">0</span></p>
+            <p>레벨: <span id="level">Easy</span></p>
+            <div id="lives"></div>
+            <div id="gameControls">
+                <button id="pauseButton" class="controlButton">일시정지</button>
+                <button id="closeButton" class="controlButton">게임 종료</button>
+                <button id="shareButton" class="controlButton">게임 공유</button>
+            </div>
+        </div>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="mobileTouchArea">
+            <div id="touchIndicator"></div>
+        </div>
         <button id="startButton">게임 시작</button>
         <div id="versionSelect">
             <h2>버전 선택</h2>
@@ -234,16 +283,6 @@
         </div>
         <div id="levelUpMessage">Level Up!</div>
         <div id="failMessage">Fail!</div>
-        <div id="gameInfo">
-            <p>점수: <span id="score">0</span></p>
-            <p>레벨: <span id="level">Easy</span></p>
-            <div id="lives"></div>
-            <div id="gameControls">
-                <button id="pauseButton" class="controlButton">일시정지</button>
-                <button id="closeButton" class="controlButton">게임 종료</button>
-                <button id="shareButton" class="controlButton">게임 공유</button>
-            </div>
-        </div>
     </div>
     <script src="game.js"></script>
 </body>

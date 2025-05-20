@@ -194,13 +194,13 @@ function checkCollisions() {
 
 // 레벨업 체크
 function checkLevelUp() {
-    if (gameState.score >= 100 && gameState.level === 'Easy') {
+    if (gameState.score >= 200 && gameState.level === 'Easy') {
         gameState.level = 'Normal';
         levelElement.textContent = gameState.level;
         setLevelSettings();
         initBricks();
         showLevelUpMessage();
-    } else if (gameState.score >= 200 && gameState.level === 'Normal') {
+    } else if (gameState.score >= 400 && gameState.level === 'Normal') {
         gameState.level = 'Hard';
         levelElement.textContent = gameState.level;
         setLevelSettings();
@@ -357,6 +357,7 @@ function updateLivesDisplay() {
 // 레벨업 메시지 표시
 function showLevelUpMessage() {
     gameState.isLevelingUp = true;
+    levelUpMessage.textContent = `Level Up! ${gameState.level}`;
     levelUpMessage.style.display = 'block';
     playSound(sounds.levelUp);
     
